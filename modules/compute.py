@@ -93,25 +93,13 @@ class Instance:
                 plugins_config = [
                     models.InstanceAgentPluginConfigDetails(
                         name = "Vulnerability Scanning",
-                        desired_state = "DISABLED"),
-                    models.InstanceAgentPluginConfigDetails(
-                        name = "Compute RDMA GPU Monitoring",
-                        desired_state = "DISABLED"),
+                        desired_state = "ENABLED"),
                     models.InstanceAgentPluginConfigDetails(
                         name = "Compute Instance Monitoring",
                         desired_state = "ENABLED"),
                     models.InstanceAgentPluginConfigDetails(
-                        name = "Compute HPC RDMA Auto-Configuration",
-                        desired_state = "DISABLED"),
-                    models.InstanceAgentPluginConfigDetails(
-                        name = "Compute HPC RDMA Authentication",
-                        desired_state = "DISABLED"),
-                    models.InstanceAgentPluginConfigDetails(
                         name = "Block Volume Management",
-                        desired_state = "DISABLED"),
-                    models.InstanceAgentPluginConfigDetails(
-                        name = "Bastion",
-                        desired_state = "DISABLED")
+                        desired_state = "ENABLED")
                 ]
             ), 
             availability_domain = kwargs["availability_domain"], 
