@@ -1,5 +1,18 @@
 from argparse import ArgumentParser
 
+from oci.config import from_file
+from oci.identity import IdentityClient
+
+from modules.identity import AvailabilityDomains
+from modules.virtual_network import Subnet
+from modules.compute import Image, Instance
+
+from modules.utils import Text, default_name, ssh_keygen
+from time import sleep
+from pathlib import Path
+
+# ======== ======== ======== ======== ======== ======== ======== ========
+
 parser = ArgumentParser(
     prog = "python main.py",
     description = "Python script that automates launching an OCI virtual machine instance.")
@@ -13,10 +26,6 @@ parser.add_argument(
 args = parser.parse_args()
 
 # ======== ======== ======== ======== ======== ======== ======== ========
-
-from oci.config import from_file
-from oci.identity import IdentityClient
-from modules.utils import Text
 
 try:
     config = from_file(
@@ -38,11 +47,6 @@ except Exception as e:
 
 # ======== ======== ======== ======== ======== ======== ======== ========
 
-from modules.availability_domains import AvailabilityDomains
-from modules.subnet import Subnet
-from modules.image import Image
-from modules.utils import ssh_keygen
-
 try:
     print()
     availability_domains = AvailabilityDomains(config).get()
@@ -61,8 +65,6 @@ except Exception as e:
 
 # ======== ======== ======== ======== ======== ======== ======== ========
 
-from modules.utils import default_name
-
 if args.auto:
     name = default_name("instance")
     print('\n' + "Name of the instance:", Text(name, "BRIGHT_YELLOW"), f"[{Text("auto-generated", "CYAN")}]")
@@ -73,10 +75,6 @@ else:
 print("Creating new instance...")
 
 # ======== ======== ======== ======== ======== ======== ======== ========
-
-from modules.instance import Instance
-from time import sleep
-from pathlib import Path
 
 attempt = 0
 

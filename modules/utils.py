@@ -22,7 +22,7 @@ class Text:
         "RESET": '\033[0m'
     }
     
-    def __new__(self, data, *args):
+    def __new__(self, data, *args: str) -> str:
         res = ""
 
         for arg in args:
@@ -36,19 +36,19 @@ from datetime import date
 from string import ascii_letters, digits
 from random import choices
 
-def default_name(resource):
+def default_name(resource_name: str) -> str:
     date_str = date.today().strftime("%Y-%m-%d")
     rand_str = ''.join(choices(ascii_letters + digits, k = 8))
 
-    return f"{resource}-{date_str}-{rand_str}"
+    return f"{resource_name}-{date_str}-{rand_str}"
 
 # ======== ======== ======== ======== ======== ======== ======== ========
 
 from cryptography.hazmat.primitives.asymmetric import rsa
 from cryptography.hazmat.backends import default_backend
-from cryptography.hazmat.primitives import serialization
+from cryptography.hazmat.primitives.serialization import Encoding, NoEncryption, PrivateFormat, PublicFormat
 
-def ssh_keygen():
+def ssh_keygen() -> tuple[str, str]:
     private_key = rsa.generate_private_key(
         public_exponent = 65537, 
         key_size = 2048, 
@@ -56,14 +56,14 @@ def ssh_keygen():
     )
 
     private_bytes = private_key.private_bytes(
-        encoding = serialization.Encoding.PEM, 
-        format = serialization.PrivateFormat.PKCS8, 
-        encryption_algorithm = serialization.NoEncryption()
+        encoding = Encoding.PEM, 
+        format = PrivateFormat.PKCS8, 
+        encryption_algorithm = NoEncryption()
     )
 
     public_bytes = private_key.public_key().public_bytes(
-        encoding = serialization.Encoding.OpenSSH, 
-        format = serialization.PublicFormat.OpenSSH
+        encoding = Encoding.OpenSSH, 
+        format = PublicFormat.OpenSSH
     )
     
     return [bytes.decode("utf-8") for bytes in [private_bytes, public_bytes]]
